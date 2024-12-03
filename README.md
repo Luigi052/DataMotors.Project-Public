@@ -1,5 +1,3 @@
-Apologies for the oversight. Here's the updated translation with all the `###` and `***` preserved:
-
 # DataMotors Project
 
 ## Description

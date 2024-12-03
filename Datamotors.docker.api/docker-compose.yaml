@@ -1,0 +1,45 @@
+# docker compose up -d --build --force-recreate
+version: '3.8'
+name: datamotors
+
+services:
+
+  db-car:
+    container_name: car-db
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=luigi
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=car
+    volumes:
+      - $VOLUME/postgres/car/data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - net
+
+  springboot:
+    build:
+      context: ../datamotors.api/
+      dockerfile: Dockerfile
+    image: car-db:latest
+    ports:
+      - 8080:8080
+    environment:
+      # aqui estamos passando as variáveis de ambiente para o container acesso o banco dentro da rede do docker
+      # note que o "db" abaixo eh o nome do servico do banco de dados acima
+      - spring.datasource.url=jdbc:postgresql://db-car:5432/car
+      - spring.datasource.username=luigi
+      - spring.datasource.password=root
+    networks:
+      - net
+    restart: always
+    depends_on:
+      - db-car
+
+networks:
+  net:
+    driver: bridge
+
+

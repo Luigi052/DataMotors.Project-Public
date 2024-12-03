@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/car}
+    username: ${DATABASE_USERNAME:luigi}
+    password: ${DATABASE_PASSWORD:root}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        default_schema: car
+  flyway:
+    baseline-on-migrate: true
+    schemas: car
+
+api:
+  security:
+    token:
+      secret: ${JTW_SECRET:8pJV&xeyZbWgeGSNhQM]52&gN;q.)m;=#DVF}SWg,SYy6tx[?^wm%kEkX4ASeo2}
